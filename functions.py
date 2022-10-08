@@ -50,13 +50,11 @@ def study_plan(videos, length, duration_choice, start_date, directory):
 
     if duration_choice == "d":
         # first checks if the entered value is end date or just days
-        if type(length) is int:
-            pass
-        else:
+        if type(length) is str:
             # create a datetime object from the passed end date string
-            # end_date_obj = datetime.strptime(length, '%Y-%m-%d')
-            # length = 
-            pass
+            end_date_obj = datetime.strptime(length, '%Y-%m-%d')
+            diff_days = end_date_obj - date_time_obj
+            length = int(str(diff_days).split()[0]) #gets the total number of days and turns it into integer
 
         length_in_seconds = math.floor(total_video_length / length)
         days = length
