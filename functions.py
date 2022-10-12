@@ -36,11 +36,18 @@ def write_to_file(study_txt, study_list, current_length, day_num, formatted_date
         study_txt.write(vid + "\n")
     study_txt.close()
 
-def study_plan(videos, length, duration_choice, start_date, directory):
+
+
+
+
+
+def study_plan(videos, length, duration_choice, start_date, directory, skip_days):
     total_video_length = 0
     current_length = 0
     study_list = []
     day_num = 1
+    skipped_days = skip_days.split()
+
 
     # create a datetime object from passed start date string
     date_time_obj = datetime.strptime(start_date, '%Y-%m-%d')
@@ -76,15 +83,19 @@ def study_plan(videos, length, duration_choice, start_date, directory):
         else:
             # record into text file
             formatted_date = date_time_obj.strftime("%A %d %B %Y")
-            write_to_file(study_txt, study_list, current_length, day_num, formatted_date, directory)
+            if date_time_obj.strftime("%a").lower() in skipped_days:
+                date_time_obj = date_time_obj + timedelta(days=1)
+                continue
+            else:
+                write_to_file(study_txt, study_list, current_length, day_num, formatted_date, directory)
 
-            # start over
-            date_time_obj = date_time_obj + timedelta(days=1)
-            day_num += 1
-            current_length = 0
-            study_list = []
-            study_list.append(v)
-            length_in_seconds = study_time
+                # start over
+                date_time_obj = date_time_obj + timedelta(days=1)
+                day_num += 1
+                current_length = 0
+                study_list = []
+                study_list.append(v)
+                length_in_seconds = study_time
 
     # add the last videos to file
     if len(study_list) > 0:
