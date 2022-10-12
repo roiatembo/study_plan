@@ -26,7 +26,7 @@ def list_files(basepath, skipped_modules):
     return video_dict
 
 def write_to_file(study_txt, study_list, current_length, day_num, formatted_date, directory):
-    study_txt = open(directory + "/Study_plan.txt", "a")
+    study_txt = open(directory + "/Study_plan.txt", "a+")
     minutes = str(math.floor(current_length / 60))
     study_txt.write("\nDay " + str(day_num) + "\n")
     study_txt.write(formatted_date + "\n")
@@ -65,8 +65,8 @@ def study_plan(videos, length, duration_choice, start_date, directory):
     study_time = length_in_seconds
     minutes_per_day = str(math.floor(length_in_seconds/60))
     study_txt = open(directory + "/Study_plan.txt", "w")
-    study_txt.write("Your study plan consists of approximately " + minutes_per_day + " minutes for " + str(days) + " days\n")
     study_txt.close()
+  
 
     for v in videos:
         if length_in_seconds > 0:
@@ -89,3 +89,14 @@ def study_plan(videos, length, duration_choice, start_date, directory):
     # add the last videos to file
     if len(study_list) > 0:
         write_to_file(study_txt, study_list, current_length, day_num, formatted_date, directory)
+
+    #add summary to beginning of the file
+    # study_txt = open(directory + "/Study_plan.txt", "w")
+    # study_txt.write("Your study plan consists of approximately " + minutes_per_day + " minutes for " + str(days) + " days\n")
+    # study_txt.close()
+    with open(directory + "/Study_plan.txt", 'r+') as f:
+        content = f.read()
+        line = "Your study plan consists of approximately " + minutes_per_day + " minutes for " + str(day_num) + " days"
+        f.seek(0, 0)
+        f.write(line.rstrip('\r\n') + '\n' + content)
+
