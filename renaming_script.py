@@ -12,15 +12,16 @@ def list_files(basepath, file_type, naming_type = "s"):
 
     list_dir = sorted(os.listdir(basepath))
     for folder in list_dir:
-        print(folder)
         if os.path.isdir(os.path.join(basepath, folder)):
             full_path = basepath + "/" + folder
             for file_name in sorted(os.listdir(full_path)):
                 if file_name.endswith(file_type):
                     split_name = file_name.split("-")[0]
-
+                
                     if len(split_name) == 2:
                         os.rename(f"{full_path}/{file_name}", f"{full_path}/{pre}{file_name}")
+                    elif len(split_name) == 3 and pre == "00":
+                        os.rename(f"{full_path}/{file_name}", f"{full_path}/0{file_name}")
                         
 
 try:
